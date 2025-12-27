@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:logging/logging.dart';
+import 'package:outdoor_aerial_server/middleware/middleware_riverpod.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -24,7 +26,9 @@ final _router = Router()
 
 final _logger = Logger('HTTP');
 
-final handler = Pipeline()
+final _provider = ProviderContainer();
+
+final _handler = Pipeline()
     .addMiddleware(
       logRequests(
         logger: (msg, isError) {
@@ -36,10 +40,11 @@ final handler = Pipeline()
         },
       ),
     )
+    .addMiddleware(riverpodMiddleware(_provider))
     .addHandler(_router.call);
 
 void main() async {
-  Logger.root.level = Level.INFO;
+  Logger.root.level = Level.ALL;
   // 监听日志记录并输出到控制台
   Logger.root.onRecord.listen((record) {
     print(
@@ -55,6 +60,6 @@ void main() async {
 
   final address = InternetAddress.anyIPv4;
   final port = int.parse(Platform.environment['SERVER_PORT'] ?? '8908');
-  await serve(handler, address, port);
+  await serve(_handler, address, port);
   _logger.info('Outdoor Aerial 服务器已成功运行');
 }

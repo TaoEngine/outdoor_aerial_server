@@ -21,10 +21,10 @@ packages:
     dependency: transitive
     description:
       name: analyzer_buffer
-      sha256: bfc88ddd7b0c66c30149f2afedfae59dc3c209990e0800b7551470caa271c90a
+      sha256: aba2f75e63b3135fd1efaa8b6abefe1aa6e41b6bd9806221620fa48f98156033
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.12"
+    version: "0.1.11"
   analyzer_plugin:
     dependency: transitive
     description:
