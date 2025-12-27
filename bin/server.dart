@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:logging/logging.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -21,13 +22,39 @@ final _router = Router()
   // 广播音频信号
   ..get('/broadcast', broadcastHandler);
 
+final _logger = Logger('HTTP');
+
 final handler = Pipeline()
-    .addMiddleware(logRequests())
+    .addMiddleware(
+      logRequests(
+        logger: (msg, isError) {
+          if (isError) {
+            _logger.severe(msg);
+          } else {
+            _logger.info(msg);
+          }
+        },
+      ),
+    )
     .addHandler(_router.call);
 
 void main() async {
-  final ip = InternetAddress.anyIPv4;
+  Logger.root.level = Level.INFO;
+  // 监听日志记录并输出到控制台
+  Logger.root.onRecord.listen((record) {
+    print(
+      '${record.time} [${record.level.name}] ${record.loggerName}: ${record.message}',
+    );
+    if (record.error != null) {
+      print('Error: ${record.error}');
+    }
+    if (record.stackTrace != null) {
+      print('StackTrace: ${record.stackTrace}');
+    }
+  });
+
+  final address = InternetAddress.anyIPv4;
   final port = int.parse(Platform.environment['SERVER_PORT'] ?? '8908');
-  await serve(handler, ip, port);
-  print('Outdoor Aerial 服务器已成功运行');
+  await serve(handler, address, port);
+  _logger.info('Outdoor Aerial 服务器已成功运行');
 }

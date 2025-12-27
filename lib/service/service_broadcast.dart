@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:logging/logging.dart';
+
 class BroadcastSignal {
   /// 接收输入
   final String singalDevice;
@@ -20,6 +22,9 @@ class BroadcastSignal {
     required this.signalSample,
     required this.signalChannel,
   });
+
+  /// 日志记录器
+  static final _logger = Logger('Broadcast');
 
   /// ffmpeg进程
   static Process? _process;
@@ -77,7 +82,7 @@ class BroadcastSignal {
     // 转发日志
     _process!.stderr.listen((List<int> data) {
       String log = systemEncoding.decode(data);
-      print('FFmpeg 日志: $log');
+      _logger.fine('FFmpeg 日志: $log'); 
     });
 
     // 推送音频
@@ -86,7 +91,7 @@ class BroadcastSignal {
         _controller!.add(Uint8List.fromList(signal));
       },
       onDone: () => _cleanProcess(),
-      onError: (e) => print(e),
+      onError: (e) => _logger.severe('推送音频流错误', e),
     );
   }
 
