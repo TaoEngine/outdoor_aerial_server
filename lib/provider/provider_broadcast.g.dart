@@ -50,7 +50,7 @@ final class BroadcastProvider
   }
 }
 
-String _$broadcastHash() => r'a8f81c4e7d5bf622707084def66f5b678ce90a21';
+String _$broadcastHash() => r'cdbd1959453a3a0dca8bd74a5b4ae465ecdf354c';
 
 final class BroadcastFamily extends $Family
     with

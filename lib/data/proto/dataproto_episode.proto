@@ -2,7 +2,7 @@ edition = "2024";
 
 package proto;
 
-import "google/type/date.proto";
+import "../../proto/google/type/date.proto";
 
 message EpisodePB {
   // 本期电台节目隶属节目信息，通过 id 反查电台节目

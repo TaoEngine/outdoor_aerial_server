@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:outdoor_aerial_server/proto/build/dataproto_station.pb.dart';
-import 'package:outdoor_aerial_server/proto/build/dataproto_status.pb.dart';
-import 'package:outdoor_aerial_server/proto/build/dataproto_type.pb.dart';
-import 'package:outdoor_aerial_server/proto/build/google/type/timeofday.pb.dart';
+import 'package:outdoor_aerial_server/data/proto/build/dataproto_station.pb.dart';
+import 'package:outdoor_aerial_server/data/proto/build/dataproto_status.pb.dart';
+import 'package:outdoor_aerial_server/data/proto/build/dataproto_type.pb.dart';
+import 'package:outdoor_aerial_server/data/proto/build/google/type/timeofday.pb.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_web_socket/shelf_web_socket.dart';
 

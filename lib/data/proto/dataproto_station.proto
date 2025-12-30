@@ -2,7 +2,7 @@ edition = "2024";
 
 package proto;
 
-import "google/type/timeofday.proto";
+import "../../proto/google/type/timeofday.proto";
 import "dataproto_status.proto";
 import "dataproto_type.proto";
 

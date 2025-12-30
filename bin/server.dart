@@ -1,5 +1,9 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:outdoor_aerial_server/data/base/database.dart';
+import 'package:outdoor_aerial_server/data/model/datamodel_status.dart';
+import 'package:outdoor_aerial_server/data/model/datamodel_type.dart';
 import 'package:outdoor_aerial_server/middleware/middleware_riverpod.dart';
 import 'package:outdoor_aerial_server/router/router_broadcast.dart';
 import 'package:outdoor_aerial_server/router/router_episode.dart';
@@ -33,6 +37,24 @@ final _handler = Pipeline()
     .addHandler(_router.call);
 
 void main() async {
+  final database = ServerDatabase();
+  await database
+      .into(database.radioStationDB)
+      .insert(
+        RadioStationDBCompanion.insert(
+          logo: Uint8List.fromList([]),
+          banner: Uint8List.fromList([]),
+          frequency: 100.0,
+          name: '测试',
+          institution: '测试',
+          language: 'zh_CN',
+          start: '',
+          end: '',
+          type: StationType.integrate,
+          status: StationStatus.onair,
+        ),
+      );
+
   // 初始化日志服务
   ServiceLogger.init();
 
