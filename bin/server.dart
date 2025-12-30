@@ -24,7 +24,7 @@ final _router = Router()
   // 广播音频信号
   ..get('/broadcast', broadcastHandler);
 
-final _logger = Logger('HTTP');
+final _logger = Logger('Main');
 
 final _provider = ProviderContainer();
 
@@ -44,7 +44,7 @@ final _handler = Pipeline()
     .addHandler(_router.call);
 
 void main() async {
-  Logger.root.level = Level.ALL;
+  Logger.root.level = Level.INFO;
   // 监听日志记录并输出到控制台
   Logger.root.onRecord.listen((record) {
     print(
