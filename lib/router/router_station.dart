@@ -59,7 +59,7 @@ final stations = [
   ),
 ];
 
-FutureOr<Response> stationHandler(Request bundleUri) {
+FutureOr<Response> stationHandler(Request request) {
   return webSocketHandler((webSocket, _) async {
     for (RadioStationPB station in stations) {
       final bytes = station.writeToBuffer();
@@ -67,5 +67,5 @@ FutureOr<Response> stationHandler(Request bundleUri) {
       await Future.delayed(Duration(seconds: 2));
     }
     webSocket.stream.listen((msg) {});
-  })(bundleUri);
+  })(request);
 }

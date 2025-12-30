@@ -1,15 +1,16 @@
 import 'dart:io';
 
 import 'package:outdoor_aerial_server/middleware/middleware_riverpod.dart';
+import 'package:outdoor_aerial_server/router/router_broadcast.dart';
+import 'package:outdoor_aerial_server/router/router_episode.dart';
+import 'package:outdoor_aerial_server/router/router_program.dart';
+import 'package:outdoor_aerial_server/router/router_root.dart';
+import 'package:outdoor_aerial_server/router/router_station.dart';
 import 'package:outdoor_aerial_server/service/service_logger.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
-
-import 'package:outdoor_aerial_server/router/router_broadcast.dart';
-import 'package:outdoor_aerial_server/router/router_root.dart';
-import 'package:outdoor_aerial_server/router/router_station.dart';
 
 /// OutdoorAerial 服务器的相关路由
 final _router = Router()
@@ -18,9 +19,9 @@ final _router = Router()
   // 广播电台仓库
   ..get('/station', stationHandler)
   // 电台界面仓库
-  // ..get('/program', )
+  ..get('/program', programHandler)
   // 今日节目仓库
-  // ..get('/episode', )
+  ..get('/episode', episodeHandler)
   // 广播音频信号
   ..get('/broadcast', broadcastHandler);
 
