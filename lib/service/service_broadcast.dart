@@ -33,7 +33,7 @@ class BroadcastService {
   late final String _sample;
 
   /// ffmpeg 进程
-  late final Process _process;
+  Process? _process;
 
   /// 配置广播音频编码方式
   void _acodecConfig() {
@@ -135,16 +135,18 @@ class BroadcastService {
       rethrow;
     }
 
+    final process = _process!;
+
     // 读取 ffmpeg 的相关日志
-    _process.stderr.listen((ffmpeg) {
+    process.stderr.listen((ffmpeg) {
       _logger.fine('同步 FFmpeg 的日志\n${systemEncoding.decode(ffmpeg)}');
     });
 
     // 主要任务是读取 ffmpeg 的广播音频流
-    yield* _process.stdout.map((signal) => Uint8List.fromList(signal));
+    yield* process.stdout.map((signal) => Uint8List.fromList(signal));
 
     // 检查退出码
-    final exitCode = await _process.exitCode;
+    final exitCode = await process.exitCode;
     if (exitCode != 0) {
       _logger.severe('FFmpeg 异常退出了，返回 $exitCode');
       throw ProcessException('ffmpeg', arguments, 'FFmpeg 遭遇异常退出', exitCode);
@@ -154,7 +156,12 @@ class BroadcastService {
   /// 终止 ffmpeg 停止音频
   void stop() {
     _logger.info('接收到杀死 FFmpeg 进程命令');
-    _process.kill();
+    if (_process != null) {
+      _process?.kill();
+      _process = null;
+    } else {
+      _logger.warning('FFmpeg 进程尚未启动');
+    }
   }
 }
 

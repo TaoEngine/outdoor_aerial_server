@@ -29,10 +29,10 @@ class ServiceLogger {
         ..write(record.message);
 
       if (record.error != null) {
-        buffer.write('\nError: ${record.error}');
+        buffer.write('\n错误详情： ${record.error}');
       }
       if (record.stackTrace != null) {
-        buffer.write('\nStackTrace: ${record.stackTrace}');
+        buffer.write('\n错误点：${record.stackTrace}');
       }
 
       final logMessage = buffer.toString();
