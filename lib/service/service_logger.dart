@@ -5,13 +5,18 @@ import 'package:shelf/shelf.dart';
 
 /// 日志服务，负责初始化日志配置并提供中间件
 class ServiceLogger {
-  static final Logger _logger = Logger('Main');
+  static final Logger _logger = Logger('Server.Main');
   static IOSink? _fileSink;
 
   /// 初始化日志配置
-  static void init({String logFilePath = 'server.log'}) {
+  static void init() {
     // 设置全局日志级别
     Logger.root.level = Level.INFO;
+
+    // 设置日志文件的名称
+    final logTimeNow = DateTime.now();
+    final logFilePath =
+        '${logTimeNow.year}${logTimeNow.month}${logTimeNow.day}-server.log';
 
     // 打开日志文件以追加模式写入
     try {
@@ -29,17 +34,17 @@ class ServiceLogger {
         ..write(record.message);
 
       if (record.error != null) {
-        buffer.write('\n错误详情： ${record.error}');
+        buffer.write('\n错误详情: ${record.error}');
       }
       if (record.stackTrace != null) {
-        buffer.write('\n错误点：${record.stackTrace}');
+        buffer.write('\n错误堆栈: ${record.stackTrace}');
       }
 
       final logMessage = buffer.toString();
-      
+
       // 输出到控制台
       print(logMessage);
-      
+
       // 写入文件
       _fileSink?.writeln(logMessage);
     });
@@ -54,14 +59,14 @@ class ServiceLogger {
 
   /// 获取用于 Shelf 的日志中间件
   static Middleware get middleware => logRequests(
-        logger: (msg, isError) {
-          if (isError) {
-            _logger.severe(msg);
-          } else {
-            _logger.info(msg);
-          }
-        },
-      );
+    logger: (msg, isError) {
+      if (isError) {
+        _logger.severe(msg);
+      } else {
+        _logger.info(msg);
+      }
+    },
+  );
 
   /// 获取主日志记录器
   static Logger get logger => _logger;
