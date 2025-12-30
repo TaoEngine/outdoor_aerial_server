@@ -6,4 +6,5 @@ build/
 .github/
 .gitignore
 .idea/
+.vscode/
 .packages
