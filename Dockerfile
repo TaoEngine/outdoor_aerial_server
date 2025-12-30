@@ -1,6 +1,9 @@
 # Use latest stable channel SDK.
 FROM dart:stable AS build
 
+# 设置好国内环境变量
+ENV PUB_HOSTED_URL="https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
+
 # Resolve app dependencies.
 WORKDIR /app
 COPY pubspec.* ./
@@ -17,5 +20,5 @@ COPY --from=build /runtime/ /
 COPY --from=build /app/bin/server /app/bin/
 
 # Start server.
-EXPOSE 8080
+EXPOSE 8908
 CMD ["/app/bin/server"]
