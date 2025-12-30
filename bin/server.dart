@@ -7,9 +7,9 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-import 'package:outdoor_aerial_server/router/broadcast.dart';
-import 'package:outdoor_aerial_server/router/root.dart';
-import 'package:outdoor_aerial_server/router/station.dart';
+import 'package:outdoor_aerial_server/router/router_broadcast.dart';
+import 'package:outdoor_aerial_server/router/router_root.dart';
+import 'package:outdoor_aerial_server/router/router_station.dart';
 
 /// OutdoorAerial 服务器的相关路由
 final _router = Router()
